@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+PROJECT_ROOT="${PROJECT_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)}"
+LEGACY_DATA_ROOT="${LEGACY_DATA_ROOT:-${PROJECT_ROOT}/../data}"
+MODEL_ROOT="${MODEL_ROOT:-${PROJECT_ROOT}/models}"
+
+if [ -z "${BASH_VERSION:-}" ]; then
+    exec bash "$0" "$@"
+fi
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Single trainable-token-vector OFFLINE teacher-rollout reverse-KL distillation.
+# Only the student's token vector is trained to match the teacher (reverse-KL) on the
+# pre-generated teacher rollouts (base frozen). Any caller env still overrides these defaults.
+
+export ENABLE_TRAINABLE_TOKEN_VECTOR=${ENABLE_TRAINABLE_TOKEN_VECTOR:-true}
+export TRAINABLE_TOKEN_VECTOR_MODE=${TRAINABLE_TOKEN_VECTOR_MODE:-single}
+export TRAINABLE_TOKEN_VECTOR_NUM=${TRAINABLE_TOKEN_VECTOR_NUM:-1}
+export TRAINABLE_TOKEN_VECTOR_LAYERS=${TRAINABLE_TOKEN_VECTOR_LAYERS:-8:25}
+export TRAINABLE_TOKEN_VECTOR_SAMPLING_METHOD=${TRAINABLE_TOKEN_VECTOR_SAMPLING_METHOD:-hypersphere}
+export TRAINABLE_TOKEN_VECTOR_SCALE=${TRAINABLE_TOKEN_VECTOR_SCALE:-0.1}
+export TRAINABLE_TOKEN_VECTOR_LEARNABLE_ALPHA=${TRAINABLE_TOKEN_VECTOR_LEARNABLE_ALPHA:-false}
+export TRAINABLE_TOKEN_VECTOR_ALPHA_INIT=${TRAINABLE_TOKEN_VECTOR_ALPHA_INIT:-0.0}
+export TRAINABLE_TOKEN_VECTOR_CURRICULUM=${TRAINABLE_TOKEN_VECTOR_CURRICULUM:-none}
+export TRAINABLE_TOKEN_VECTOR_FORCE_ALL_TOKENS=${TRAINABLE_TOKEN_VECTOR_FORCE_ALL_TOKENS:-true}
+
+export LORA_RANK=${LORA_RANK:-0}
+export ACTOR_LR=${ACTOR_LR:-1e-2}
+export SAVE_VECTOR=${SAVE_VECTOR:-true}
+export SAVE_FREQ=${SAVE_FREQ:--1}
+export OFFLOAD=${OFFLOAD:-false}
+
+LAYER_TAG=${TRAINABLE_TOKEN_VECTOR_LAYERS//:/-}
+export EXPERIMENT_NAME="${EXPERIMENT_NAME:-ifevalg_distill_offline_single}"
+exec bash "${SCRIPT_DIR}/ifevalg_distill_offline.sh" "$@"

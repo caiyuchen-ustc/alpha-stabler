@@ -1,0 +1,18 @@
+{
+  "math": {
+    "base": "Qwen/Qwen3-4B",
+    "teacher": null
+  },
+  "science": {
+    "base": "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B",
+    "teacher": null
+  },
+  "code": {
+    "base": "Qwen/Qwen3-8B",
+    "teacher": null
+  },
+  "instruction": {
+    "base": "deepseek-ai/DeepSeek-R1-Distill-Qwen-7B",
+    "teacher": null
+  }
+}

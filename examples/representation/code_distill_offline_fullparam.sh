@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+PROJECT_ROOT="${PROJECT_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)}"
+LEGACY_DATA_ROOT="${LEGACY_DATA_ROOT:-${PROJECT_ROOT}/../data}"
+MODEL_ROOT="${MODEL_ROOT:-${PROJECT_ROOT}/models}"
+
+if [ -z "${BASH_VERSION:-}" ]; then
+    exec bash "$0" "$@"
+fi
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Full-parameter OFFLINE teacher-rollout reverse-KL distillation, Qwen3-4B on code
+# (teacher = Qwen3-4B code-RL DAPO). Reuses code_distill_offline.sh.
+
+export LORA_RANK="${LORA_RANK:-0}"
+export ENABLE_TRAINABLE_TOKEN_VECTOR="${ENABLE_TRAINABLE_TOKEN_VECTOR:-false}"
+export SAVE_VECTOR="${SAVE_VECTOR:-false}"
+export ACTOR_LR="${ACTOR_LR:-1e-6}"
+export EXPERIMENT_NAME="${EXPERIMENT_NAME:-code_distill_offline_fullparam}"
+
+exec bash "${SCRIPT_DIR}/code_distill_offline.sh" "$@"

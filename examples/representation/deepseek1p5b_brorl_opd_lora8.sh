@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+PROJECT_ROOT="${PROJECT_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)}"
+LEGACY_DATA_ROOT="${LEGACY_DATA_ROOT:-${PROJECT_ROOT}/../data}"
+MODEL_ROOT="${MODEL_ROOT:-${PROJECT_ROOT}/models}"
+
+if [ -z "${BASH_VERSION:-}" ]; then
+    exec bash "$0" "$@"
+fi
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+export MODEL_PATH="${MODEL_PATH:-${MODEL_ROOT}/DeepSeek-R1-Distill-Qwen-1.5B}"
+export Teacher_MODEL_PATH="${Teacher_MODEL_PATH:-${MODEL_ROOT}/BroRL-1.5B}"
+RUN_ROOT="${RUN_ROOT:-${PROJECT_ROOT}/outputs/deepseek1p5b_brorl_opd_lora8}"
+
+export LORA_RANK="${LORA_RANK:-8}"
+export LORA_ALPHA="${LORA_ALPHA:-16}"
+export LORA_TARGET_MODULES="${LORA_TARGET_MODULES:-all-linear}"
+export ENABLE_TRAINABLE_TOKEN_VECTOR="${ENABLE_TRAINABLE_TOKEN_VECTOR:-false}"
+export MODEL_USE_SHM="${MODEL_USE_SHM:-true}"
+export ROLLOUT_LOAD_FORMAT="${ROLLOUT_LOAD_FORMAT:-safetensors}"
+
+export ROLLOUT_LAYERED_SUMMON="${ROLLOUT_LAYERED_SUMMON:-false}"
+export ACTOR_ONLY_REVERSE_KL_ADVANTAGES="${ACTOR_ONLY_REVERSE_KL_ADVANTAGES:-true}"
+export ACTOR_LR="${ACTOR_LR:-5e-5}"
+export SAVE_VECTOR="${SAVE_VECTOR:-false}"
+
+export EXPERIMENT_NAME="${EXPERIMENT_NAME:-deepseek1p5b_opd_lora8}"
+export LOCAL_DIR_BASE="${LOCAL_DIR_BASE:-${RUN_ROOT}/checkpoints}"
+export SAVE_VECTOR_BASE_DIR="${SAVE_VECTOR_BASE_DIR:-${RUN_ROOT}/trainable_vectors}"
+exec bash "${SCRIPT_DIR}/1p5bopd.sh" "$@"
