@@ -125,8 +125,3 @@ python -m pytest -q tests/opv
 python scripts/check_repository.py
 python scripts/audit_anonymity.py
 ```
-
-Validation coverage is documented in [testing](docs/validation.md). The review copy
-has a fresh anonymous commit and no configured Git remote. Share the exported ZIP
-through the submission system or an anonymous hosting service; a repository hosted
-under an identifying account would disclose that account regardless of file contents.
