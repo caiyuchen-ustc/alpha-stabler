@@ -14,10 +14,6 @@ pip install -r requirements-opv.txt
 python -m nltk.downloader punkt punkt_tab averaged_perceptron_tagger_eng
 ```
 
-The package includes third-party source code. Its copyright and license notices
-remain intact; see [LICENSE](LICENSE), [Notice.txt](Notice.txt), and source headers.
-These upstream attributions do not identify the submitting authors.
-
 ## Models and data
 
 The artifact contains source code, configurations and tests. Model weights,
