@@ -1,4 +1,4 @@
-# Anonymous Review Artifact
+# Vector training
 
 Training code for reinforcement learning, on-policy and offline distillation,
 trainable representation vectors, and Alpha-Stabler. The implementation uses verl,
